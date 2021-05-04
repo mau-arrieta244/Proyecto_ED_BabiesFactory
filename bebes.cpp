@@ -4,7 +4,52 @@
 
 #include <iostream>
 #include <string>
+#include<fstream>
+#include<dirent.h>
 using namespace std;
+
+
+void imprimirTXT(string nombreArchivo){
+    ifstream file(nombreArchivo);
+    string contenido;
+    string input;
+    while(file>>input){
+        contenido+=input;
+    }
+    cout<<contenido<<endl;
+}
+string checkPathString(string path){
+    if(path[path.length()-1] == '/'){
+        path = path.substr(0,path.length()-1);
+    }
+    return path;
+}
+
+void listdir(string initStrPath){
+    
+    struct dirent * dir;
+    DIR * dp = opendir(initStrPath.c_str()); 
+    
+    if(dp){
+        while((dir = readdir(dp))!=NULL){
+            cout<<dir<<endl;
+            string strPath ="";
+            if(strcmp(dir->d_name,".")==0 || strcmp(dir->d_name,"..")==0)continue;
+  
+            else{
+                initStrPath = checkPathString(initStrPath);
+                strPath = initStrPath+"/"+dir->d_name;
+                //cout<<strPath<<endl;
+                cout<<"\n ------ \n"<<endl;
+                imprimirTXT(strPath);
+                listdir(strPath);
+                cout<<"\n ------ \n"<<endl;
+            }
+        }
+        closedir(dp);
+    }
+}
+
 
 struct Bebe{
 

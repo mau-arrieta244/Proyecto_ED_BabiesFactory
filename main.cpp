@@ -2,6 +2,7 @@
 
 int main(int argc,char*argv[]){
     
+    /*
     //debe crear bebe "Moreno"
     Bebe * b1 = new Bebe("Moreno","Moreno");
     b1->imprimirPiel();
@@ -17,6 +18,8 @@ int main(int argc,char*argv[]){
     //debe crear bebe "Default"
     Bebe * b4 = new Bebe("HALF","EMPTY","EMPTY");
     b4->imprimirPiel();
+    */
 
+    listdir("C:\\Users\\mauar\\Desktop\\CODE\\Proyecto_ED_BabiesFactory\\pedidosEspeciales");
     return 0;
 }
