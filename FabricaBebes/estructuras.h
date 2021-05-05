@@ -1,198 +1,167 @@
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
+#include <iostream>
+#include <ctime>
+#include <unistd.h>
+#include <Windows.h>
+#include <unistd.h>
 using namespace std;
 
 //Prototipos de estructuras
-
 struct Sentimiento;
 struct NodoSentimiento;
-struct ListaSimple;
+struct ColaSentimiento;
 struct FabricaSentimiento;
-struct Persona;
-struct Nodo;
-struct Pila;
-struct Cola;
-struct ColaPrioridad;
+struct Nota;
+struct NodoNota;
+struct ColaNota;
+struct FabricaMusica;
 
 struct Sentimiento{
        string corazon;
        Sentimiento(string pCorazon){
               corazon = pCorazon;
+              
        }
        void imprimir(){
-              cout << "Sentimiento: " << corazon << endl;
+              cout << "Corazon " << corazon << endl;
        }
 };
 struct NodoSentimiento{
-       Sentimiento * sentimiento;
-       NodoSentimiento * siguiente;
-
-       NodoSentimiento(Sentimiento * pSentimiento){
-              sentimiento = pSentimiento;
+       Sentimiento * sentimiento;  //TODO: CHANGE PRIORITY
+       
+       NodoSentimiento* siguiente; // puntero para enlazar nodos
+       
+       NodoSentimiento(){
+              sentimiento = NULL;
               siguiente = NULL;
        }
+       NodoSentimiento(Sentimiento * inSentimiento){
+              sentimiento = inSentimiento; // asigna los datos 
+              siguiente = NULL;
+       }
+       
 };
-
-struct ListaSimple{
-	NodoSentimiento * primerNodo, *ultimoNodo;
-
-	ListaSimple (){
-		primerNodo = ultimoNodo = NULL;
-	}
-	
-	void imprimir();
-	void insertar(Sentimiento*);	
-	
-	// busca un hijo por nombre. Retorna null si no lo encuentra
-	/*
-       NodoHijo * buscar(string nombre){
-		NodoHijo * tmp = primerNodo;
-		while (tmp!= NULL){
-			if (tmp->hijo->nombre == nombre)
-				return tmp;
-			tmp = tmp->siguiente;
+struct ColaSentimiento{
+       NodoSentimiento *frente; 
+       ColaSentimiento(){
+            frente = NULL;
+       }
+       NodoSentimiento* verFrente(void);
+       void imprimir(void);
+       void encolarSentimiento(Sentimiento * pSentimiento){
+       	if (frente == NULL)
+		       frente = new NodoSentimiento(pSentimiento);
+		else{
+		       // referencia al primero para recorrer la lista
+		       NodoSentimiento* actual = frente;
+	              // recorre la lista hasta llegar al penultimo nodo
+	              while (actual->siguiente != NULL)
+		              actual = actual->siguiente; 
+		       
+	              // Crea nuevo nodo, lo apunta con uN  
+	              NodoSentimiento* nuevo = new NodoSentimiento(pSentimiento);
+		       //le quita el enlace al que era ultimo
+		       actual->siguiente = nuevo;
 		}
-		return NULL;
 	}
-       */
 };
 struct FabricaSentimiento{
        int capacidad;
-       ListaSimple * sentimientos;
-
+       int sentimientosActivos;
+       ColaSentimiento * sentimientos;
        FabricaSentimiento(){
-              capacidad = 0;
-              sentimientos = new ListaSimple();
+              capacidad = 20;
+              sentimientosActivos = 0;
+              sentimientos = new ColaSentimiento();
        }
-       FabricaSentimiento(int pCapacidad){
-              capacidad = pCapacidad;
-              sentimientos = new ListaSimple();
+       string generarSentimientoRandom();
+       void insertarSentimiento(int, int, FabricaSentimiento *);
+       void imprimir();
+};
+struct Nota{
+       string tipoNota;
+       Nota(string pNota){
+              tipoNota = pNota;
        }
        void imprimir(){
-              sentimientos->imprimir();
+              cout << "Nota" << tipoNota << endl;
        }
-
 };
-struct Persona{
-	int id;
-	int priority;
-	
-	Persona (int _id, int _p){
-		id = _id;
-		priority = _p;
-	}
-
-};
-
-
-// estructura nodo para lista simple
-struct Nodo {
-       int dato; // parte de datos
-       Persona * persona;  //TODO: CHANGE PRIORITY
-       Nodo* siguiente;// puntero para enlazar nodos
-       // constructor
-       
-       Nodo(int d) 
-       {
-                dato = d; // asigna los datos 
-                siguiente = NULL; // sig es null
+struct NodoNota{
+       Nota * nota; 
+       NodoNota* siguiente;  
+       NodoNota(){
+              nota = NULL;
+              siguiente = NULL;
        }
-
-       //TODO: CHANGE PRIORITY       
-       Nodo(Persona * p) 
-       {
-                dato = p->id; // asigna los datos 
-                siguiente = NULL; // sig es null
-                persona = p;
-       }
-      void imprimir();
-       
+       NodoNota(Nota * inNota){
+              nota = inNota;
+              siguiente = NULL;
+       }  
 };
-
-
-struct Pila {
-       // solo con pN es suficiente
-       Nodo *tope;
-       
-       Pila()
-       {
-                    tope = NULL;
-       }
-       
-       // encabezados de funcion
-       void push (int dato);
-       Nodo* pop (void);
-       Nodo* peek(void);
-       bool empty(void);
-       void imprimir(void);
-};
-
-struct Cola {
-       // solo con pN es suficiente
-       Nodo *frente; // ERROR sin ultimo nodo
-       
-       Cola()
-       {
+struct ColaNota{
+       NodoNota *frente; 
+       ColaNota(){
             frente = NULL;
        }
-       
-       // encabezados de funcion
-       void encolar (int dato);
-       Nodo* desencolar (void);
-       Nodo* verFrente(void);
-       bool vacia(void);
+       NodoNota* verFrente(void);
        void imprimir(void);
-
-       void encolarPersona (Persona * p){
-       		if (vacia())
-		        frente = new Nodo (p);
-		    else 
-		    {
-		            // referencia al primero para recorrer la lista
-		            Nodo* actual = frente;
-		            // recorre la lista hasta llegar al penultimo nodo
-		            while (actual->siguiente != NULL)
-		                          actual = actual->siguiente; 
-		              
-		            // Crea nuevo nodo, lo apunta con uN  
-		            Nodo* nuevo = new Nodo (p);
-		            //le quita el enlace al que era ultimo
-		            actual->siguiente = nuevo;
-		    }
-	   }
+       void encolarNota(Nota*);
 };
-
-struct ColaPrioridad {
-       // solo con pN es suficiente
-       Cola * colaRegular;
-       Cola * colaEspecial;
-       
-       ColaPrioridad()
-       {
-            colaRegular = new Cola();
-            colaEspecial = new Cola();
+struct FabricaMusica{
+       int capacidad;
+       int notasActivas;
+       ColaNota * notas;
+       FabricaMusica(){
+              capacidad = 20;
+              notasActivas = 0;
+              notas = new ColaNota();
        }
-       
-       // encabezados de funcion
-       void encolar (Persona * p){
-       		if (p->priority == 1)
-       			colaRegular->encolarPersona(p);
-       		else
-       			colaEspecial->encolarPersona(p);
-	   }
-       Nodo* desencolar (){
-       		if (!colaEspecial->vacia())
-       			return colaEspecial->desencolar();
-       		else
-       			return colaRegular->desencolar();
-	   }
-	   
-	   void imprimir(){
-	   	cout <<"Cola prioridad: " << endl;
-	   	colaEspecial->imprimir();
-	   	cout << endl << endl << "Cola: ";
-	   	colaRegular->imprimir();
-	   }
+       string generarNotaRandom();
+       void insertarNota(int, int, FabricaMusica *);
+       void imprimir();
 };
 
+struct Hate{
+       string tipoHate;
+       Hate(string pHate){
+              tipoHate = pHate;
+       }
+};
+struct NodoHate{
+       Hate * hate; 
+       NodoHate* siguiente;  
+       NodoHate(){
+              hate = NULL;
+              siguiente = NULL;
+       }
+       NodoHate(Hate * inHate){
+              hate = inHate;
+              siguiente = NULL;
+       }  
+};
+struct ColaHate{
+       NodoHate *frente; 
+       ColaHate(){
+            frente = NULL;
+       }
+       NodoHate* verFrente(void);
+       void imprimir(void);
+       void encolarHate(Hate*);
+};
+struct FabricaHate{
+       int capacidad;
+       int hatesActivos;
+       ColaHate * hates;
+       FabricaHate(){
+              capacidad = 20;
+              hatesActivos = 0;
+              hates = new ColaHate();
+       }
+       string generarHateRandom();
+       void insertarHate(int, int, FabricaHate *);
+       void imprimir();
+};
 

@@ -1,9 +1,23 @@
 #include "estructuras.h"
 int main(int argc, char *argv[]){
-    ListaSimple * sentimientos = new ListaSimple();
-    Sentimiento * pruebaSentimiento = new Sentimiento("Vacio");
-    sentimientos->insertar(pruebaSentimiento);
-    sentimientos->imprimir();
-    system("PAUSE");
-    return EXIT_SUCCESS;  
+    /*
+	//Fabrica Sentimiento
+    FabricaSentimiento * fabricaS = new FabricaSentimiento();
+    fabricaS->insertarSentimiento(2, 2, fabricaS);
+    fabricaS->imprimir();
+    */
+	//Fabrica Musica
+	/*
+	FabricaMusica * fabricaM = new FabricaMusica ();
+    fabricaM->insertarNota(2, 2, fabricaM);
+    fabricaM->imprimir();
+    */
+	//Fabrica Hate
+	/*
+	FabricaHate * fabricaH = new FabricaHate();
+    fabricaH->insertarHate(2, 2, fabricaH);
+    fabricaH->imprimir();
+	*/
+	return 0;
+  
 }

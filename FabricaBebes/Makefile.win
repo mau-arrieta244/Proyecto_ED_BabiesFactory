@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = 
-LINKOBJ  = 
+OBJ      = main.o FabricaMusica.o FabricaSentimiento.o ColaNota.o ColaSentimiento.o ColaHate.o FabricaHate.o
+LINKOBJ  = main.o FabricaMusica.o FabricaSentimiento.o ColaNota.o ColaSentimiento.o ColaHate.o FabricaHate.o
 LIBS     = -L"E:/Archivos de Programas/Dev-Cpp/MinGW64/lib" -L"E:/Archivos de Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -std=c++11
 INCS     = -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/include" -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/include" -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"E:/Archivos de Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -23,3 +23,24 @@ clean: clean-custom
 
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+FabricaMusica.o: FabricaMusica.cpp
+	$(CPP) -c FabricaMusica.cpp -o FabricaMusica.o $(CXXFLAGS)
+
+FabricaSentimiento.o: FabricaSentimiento.cpp
+	$(CPP) -c FabricaSentimiento.cpp -o FabricaSentimiento.o $(CXXFLAGS)
+
+ColaNota.o: ColaNota.cpp
+	$(CPP) -c ColaNota.cpp -o ColaNota.o $(CXXFLAGS)
+
+ColaSentimiento.o: ColaSentimiento.cpp
+	$(CPP) -c ColaSentimiento.cpp -o ColaSentimiento.o $(CXXFLAGS)
+
+ColaHate.o: ColaHate.cpp
+	$(CPP) -c ColaHate.cpp -o ColaHate.o $(CXXFLAGS)
+
+FabricaHate.o: FabricaHate.cpp
+	$(CPP) -c FabricaHate.cpp -o FabricaHate.o $(CXXFLAGS)
