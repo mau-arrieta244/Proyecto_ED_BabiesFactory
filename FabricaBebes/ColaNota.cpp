@@ -1,4 +1,10 @@
 #include "estructuras.h"
+string ColaNota::generarNotaRandom(){
+    string tiposNotas[2] ={"vacia", "llena"};
+    srand(time(0));
+    int numRandom = rand() % 2;
+    return tiposNotas[numRandom];
+}
 void ColaNota::imprimir(void)
 {
      cout << "Frente" << endl;
@@ -13,14 +19,33 @@ void ColaNota::imprimir(void)
 NodoNota* ColaNota::verFrente(){
       return frente;      
 }
-void ColaNota::encolarNota(Nota * pNota){
-      if (frente == NULL)
-		frente = new NodoNota(pNota);
+void ColaNota::encolarNota(){
+    if (frente == NULL){
+        frente = new NodoNota(new Nota(generarNotaRandom()));
+        notasActivas ++;
+    }
+
 	else{
-		NodoNota* actual = frente;
-	      while (actual->siguiente != NULL)
-		    actual = actual->siguiente;  
-	      NodoNota* nuevo = new NodoNota(pNota);
-		actual->siguiente = nuevo;
+        if((1+notasActivas) <= capacidad){
+            NodoNota* actual = frente;
+            while (actual->siguiente != NULL)
+                actual = actual->siguiente;
+            sleep(segundos);
+            NodoNota* nuevo = new NodoNota(new Nota(generarNotaRandom()));
+            actual->siguiente = nuevo;
+            notasActivas ++;
+        }
 	}
+}
+NodoNota *  ColaNota::desencolarNota(){
+      if (frente == NULL){
+         return NULL;
+      }
+      else{
+          NodoNota * borrado = frente;
+          frente = frente->siguiente;
+          borrado->siguiente = NULL;
+          notasActivas-=1;
+          return borrado;
+      }
 }
