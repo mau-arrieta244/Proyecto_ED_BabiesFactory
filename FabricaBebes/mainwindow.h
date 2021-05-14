@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "estructuras.h"
+#include "estructuraspedido.h"
+#include "hilopedidos.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,10 +17,21 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    //globales
     hilo_Hate hilo1;
     hilo_Sentimiento hilo2;
     hilo_Musica hilo3;
     hilo_Generador hilo4;
+    //Declaracion de funciones "sueltas" (no pertenecen a un struct)
+    QString colorPapa(QString nombreArchivo);
+    int longitudPapa(QString nombreArchivo);
+    QString colorMama(QString nombreArchivo,int longitudPadre);
+    QString checkPathString(QString path);
+    void listdir(QString initStrPath,
+           estructurasPedido::ColaPedidos * cola,
+           estructurasPedido::ListaPedidosEspeciales * lista);
+    QString easy();
+    hiloPedidos hilo1Pedidos;
     ~MainWindow();
 
 private slots:

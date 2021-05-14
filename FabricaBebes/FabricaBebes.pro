@@ -16,15 +16,19 @@ SOURCES += \
     ColaSentimiento.cpp \
     FabricanteAutomatico.cpp \
     ListaPedidosEspeciales.cpp \
+    estructuraspedido.cpp \
     hiloGenerador.cpp \
     hiloHate.cpp \
     hiloMusica.cpp \
     hiloSentimiento.cpp \
+    hilopedidos.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     estructuras.h \
+    estructuraspedido.h \
+    hilopedidos.h \
     mainwindow.h
 
 FORMS += \
