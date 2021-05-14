@@ -1,23 +1,25 @@
 #include "estructuras.h"
-bool ColaPedidos::vacia(){
+bool ColaBebes::vacia(){
  if (frente == NULL)
     return true;
  else
      return false;
 }
-void ColaPedidos::encolarBebe(Bebe * b){
-     if (vacia())
+void ColaBebes::encolarBebe(Bebe * b){
+     if (vacia()){
          frente = new NodoBebe (b);
+         bebesActivos ++;
+     }
      else{
           NodoBebe* actual = frente;
           while (actual->siguiente != NULL)
               actual = actual->siguiente;
           NodoBebe* nuevo = new NodoBebe (b);
           actual->siguiente = nuevo;
-          bebesActivos+= 1;
+          bebesActivos ++;
      }
 }
-NodoBebe * ColaPedidos::desencolar(){
+NodoBebe * ColaBebes::desencolar(){
       if (vacia()){
          return NULL;
       }
@@ -29,7 +31,7 @@ NodoBebe * ColaPedidos::desencolar(){
           return borrado;
        }
 }
-void ColaPedidos::imprimir(){
+void ColaBebes::imprimir(){
      cout << "Frente" << endl;
      NodoBebe *tmp = frente;
      while (tmp != NULL){
@@ -38,6 +40,6 @@ void ColaPedidos::imprimir(){
      }
      cout << "Final" << endl;
 }
-NodoBebe* ColaPedidos::verFrente(){
+NodoBebe* ColaBebes::verFrente(){
     return frente;
 }

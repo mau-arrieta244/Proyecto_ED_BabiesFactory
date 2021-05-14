@@ -24,7 +24,6 @@ void ColaHate::encolarHate(){
     }
 	else{
         if((1+hatesActivos) <= capacidad){
-            string tipoHate;
             NodoHate* actual = frente;
             while (actual->siguiente != NULL)
                 actual = actual->siguiente;
@@ -47,7 +46,7 @@ NodoHate *  ColaHate::desencolarHate(){
           return borrado;
       }
 }
-bool ColaHate::isFinish(){
+bool ColaHate::isFinishHate(){
     return hatesActivos == 20;
 }
 

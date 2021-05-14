@@ -11,6 +11,8 @@
 #include <dirent.h>
 #include <cstdio>
 #include <sstream> //string to stream para getline()
+#include <QtCore>
+
 
 using namespace std;
 
@@ -62,6 +64,7 @@ struct NodoSentimiento{
        
 };
 struct ColaSentimiento{
+public:
        int segundos;
        int capacidad;
        int sentimientosActivos;
@@ -72,17 +75,12 @@ struct ColaSentimiento{
            sentimientosActivos = 0;
            frente = NULL;
        }
-       ColaSentimiento(int pSegundos){
-           segundos = pSegundos;
-           capacidad = 20;
-           sentimientosActivos = 0;
-           frente = NULL;
-       }
        NodoSentimiento* verFrente(void);
        void imprimir(void);
        void encolarSentimiento();
        NodoSentimiento * desencolarSentimiento();
        string generarSentimientoRandom();
+       bool isFinishSentimiento();
 };
 struct FabricaSentimiento{
        ColaSentimiento * sentimientos;
@@ -122,17 +120,12 @@ struct ColaNota{
            notasActivas = 0;
            frente = NULL;
        }
-       ColaNota(int pSegundos){
-           segundos = pSegundos;
-           capacidad = 20;
-           notasActivas = 0;
-           frente = NULL;
-       }
        NodoNota* verFrente(void);
        void imprimir(void);
        void encolarNota();
        NodoNota * desencolarNota();
        string generarNotaRandom();
+       bool isFinishNota();
 };
 struct FabricaMusica{
        ColaNota * notas;
@@ -171,19 +164,14 @@ public:
            hatesActivos = 0;
            frente = NULL;
        }
-       ColaHate(int pSegundos){
-           segundos = pSegundos;
-           capacidad = 20;
-           hatesActivos = 0;
-           frente = NULL;
-       }
        NodoHate* verFrente(void);
        void imprimir(void);
        string generarHateRandom();
        void encolarHate();
        NodoHate* desencolarHate();
-       bool isFinish();
+       bool isFinishHate();
 };
+/*
 struct FabricaHate{
        ColaHate * hates;
        FabricaHate(){
@@ -200,7 +188,7 @@ struct Fabricas{
         fabricaSentimiento = new FabricaSentimiento();
     }
 };
-
+*/
 struct Bebe{
     string amor;
     string arte;
@@ -216,6 +204,13 @@ struct Bebe{
         colorPiel = "";
         bebeMalo = false;
     }
+    Bebe(bool pBebeMalo){
+        amor = "";
+        arte = "";
+        hate = "";
+        colorPiel = "desconocido";
+        bebeMalo = pBebeMalo;
+    }
     //constructor cuando se ingresan string papá y mamá
     Bebe(string color){
         amor = "";
@@ -227,8 +222,11 @@ struct Bebe{
     //constructor cuando se ingresan tres strings de emociones
     Bebe(string pAmor,string pArte,string pHate){
         amor = pAmor;
+        cout << amor << endl;
         arte = pArte;
+        cout << arte << endl;
         hate = pHate;
+        cout << hate << endl;
         //no siempre va a ser bebe malo = false cuando se ingresen emociones
         //tenemos que validar si las 3 estan en lista, si no estan, es bebeMalo
         bebeMalo = false;
@@ -288,18 +286,18 @@ struct NodoBebe {
        //void imprimir();
 };
 
-struct ColaPedidos {
+struct ColaBebes {
     int segundos;
     int capacidad;
     int bebesActivos;
     NodoBebe *frente;
-    ColaPedidos(){
+    ColaBebes(){
         segundos = 0;
         capacidad = 10;
         bebesActivos = 0;
         frente = NULL;
      }
-    ColaPedidos(int pSegundos){
+    ColaBebes(int pSegundos){
         segundos = pSegundos;
         capacidad = 10;
         bebesActivos = 0;
@@ -334,7 +332,34 @@ struct ColaMalos{
     void imprimir();
     NodoBebe* verFrente();
 };
-
+struct FabricanteAutomatico{
+public:
+        ColaHate * colaHate;
+        ColaSentimiento * colaSentimiento;
+        ColaNota * colaNota;
+        int segundos;
+        ColaBebes * colaBebes;
+        ColaMalos * colaMalos;
+        FabricanteAutomatico(){
+            segundos = 0;
+            colaBebes = new ColaBebes();
+            colaMalos = new ColaMalos();
+        }
+        FabricanteAutomatico(ColaHate * pColaHate ,
+                             ColaSentimiento * pColaSentimiento,
+                             ColaNota * pColaNota,
+                             ColaBebes * pColaBebes,
+                             ColaMalos * pColaMalos){
+            colaHate = pColaHate;
+            colaSentimiento = pColaSentimiento;
+            colaNota = pColaNota;
+            segundos = 0;
+            colaBebes = pColaBebes;
+            colaMalos = pColaMalos;
+        }
+        void crearBebeRandom();
+        bool isFinishGenerador();
+};
 //Nodo para lista doble del historico de los pedidos especiales
 struct NodoHistorico{
     string tipoMadre;
@@ -376,17 +401,57 @@ struct ListaPedidosEspeciales{
     NodoHistorico * borrarAlFinal();
 
 };
-struct FabricanteAutomatico{
-        Fabricas* fabricas;
-        int segundos;
-        ColaPedidos * colaBebes;
-        ColaMalos * colaMalos;
-        FabricanteAutomatico(){
-            fabricas = new Fabricas();
-            segundos = 0;
-            colaBebes = new ColaPedidos();
-        }
-        void crearBebeRandom();
+class hilo_Hate: public QThread{
+public:
+    bool running;
+
+    hilo_Hate();
+
+    ColaHate * colaHate;
+
+    void __init__(struct ColaHate*);
+    void run();
+    void stop();
+    void continuar();
+};
+class hilo_Sentimiento: public QThread{
+public:
+    bool running;
+
+    hilo_Sentimiento();
+
+    ColaSentimiento * colaSentimiento;
+
+    void __init__(struct ColaSentimiento*);
+    void run();
+    void stop();
+    void continuar();
+};
+class hilo_Musica: public QThread{
+public:
+    bool running;
+
+    hilo_Musica();
+
+    ColaNota * colaNota;
+
+    void __init__(struct ColaNota*);
+    void run();
+    void stop();
+    void continuar();
+};
+class hilo_Generador: public QThread{
+public:
+    bool running;
+
+    hilo_Generador();
+
+    FabricanteAutomatico * fabricanteAutomatico;
+
+    void __init__(struct FabricanteAutomatico*);
+    void run();
+    void stop();
+    void continuar();
 };
 
 

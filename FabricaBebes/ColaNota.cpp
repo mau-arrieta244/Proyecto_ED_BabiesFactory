@@ -49,3 +49,6 @@ NodoNota *  ColaNota::desencolarNota(){
           return borrado;
       }
 }
+bool ColaNota::isFinishNota(){
+    return notasActivas == 20;
+}

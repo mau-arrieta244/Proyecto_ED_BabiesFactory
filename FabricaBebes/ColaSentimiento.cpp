@@ -19,8 +19,11 @@ NodoSentimiento* ColaSentimiento::verFrente(){
       return frente;      
 }
 void ColaSentimiento::encolarSentimiento(){
-     if (frente == NULL)
-            frente = new NodoSentimiento(new Sentimiento(generarSentimientoRandom()));
+     if (frente == NULL){
+        frente = new NodoSentimiento(new Sentimiento(generarSentimientoRandom()));
+        sentimientosActivos ++;
+     }
+
      else{
          if((1+sentimientosActivos) <= capacidad){
              NodoSentimiento* actual = frente;
@@ -44,4 +47,7 @@ NodoSentimiento *  ColaSentimiento::desencolarSentimiento(){
           sentimientosActivos-=1;
           return borrado;
       }
+}
+bool ColaSentimiento::isFinishSentimiento(){
+    return sentimientosActivos == 20;
 }

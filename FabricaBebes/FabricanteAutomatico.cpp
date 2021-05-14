@@ -22,18 +22,31 @@ void FabricanteAutomatico::crearBebeRandom(){
         cantidad = 4;
     }
     for(int i = 0; i < cantidad; i++){
-        nHateObtenido = fabricas->fabricaHate->hates->desencolarHate();
+        nHateObtenido = colaHate->desencolarHate();
         tipoHate = nHateObtenido->hate->tipoHate;
-        nMusicaObtenido = fabricas->fabricaMusica->notas->desencolarNota();
+        nMusicaObtenido = colaNota->desencolarNota();
         tipoNota = nMusicaObtenido->nota->tipoNota;
-        nSentimientoObtenido = fabricas->fabricaSentimiento->sentimientos->desencolarSentimiento();
+        nSentimientoObtenido = colaSentimiento->desencolarSentimiento();
         tipoSentimiento = nSentimientoObtenido->sentimiento->corazon;
-        Bebe * bebeCreado = new Bebe(tipoSentimiento, tipoNota , tipoHate);
-        if(bebeCreado->bebeMalo == false && colaBebes->bebesActivos+1 <= colaBebes->capacidad){
-            colaBebes->encolarBebe(bebeCreado);
+        if(nHateObtenido != NULL & nMusicaObtenido != NULL & nSentimientoObtenido != NULL){
+            Bebe * bebeCreado = new Bebe(tipoSentimiento, tipoNota , tipoHate);
+            if(bebeCreado->bebeMalo == false && colaBebes->bebesActivos+1 <= colaBebes->capacidad){
+                colaBebes->encolarBebe(bebeCreado);
+                qDebug() << "Llevo " << this->colaBebes->bebesActivos << "Bebes bueno (s)";
+            }
+            else{
+                colaMalos->encolarBebe(bebeCreado);
+                qDebug() << "Llevo " << this->colaMalos->malosActivos << "Bebes malo (s)";
+            }
         }
         else{
-            colaMalos->encolarBebe(bebeCreado);
+            Bebe * bebeCreado2 = new Bebe(true);
+            colaMalos->encolarBebe(bebeCreado2);
+            qDebug() << "Llevo " << this->colaMalos->malosActivos << "Bebes malo (s)";
         }
     }
 }
+bool FabricanteAutomatico::isFinishGenerador(){
+    return colaBebes->bebesActivos == 10;
+}
+

@@ -9,20 +9,22 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ColaBebes.cpp \
     ColaHate.cpp \
     ColaMalos.cpp \
     ColaNota.cpp \
-    ColaPedidos.cpp \
     ColaSentimiento.cpp \
     FabricanteAutomatico.cpp \
     ListaPedidosEspeciales.cpp \
+    hiloGenerador.cpp \
     hiloHate.cpp \
+    hiloMusica.cpp \
+    hiloSentimiento.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     estructuras.h \
-    hiloHate.h \
     mainwindow.h
 
 FORMS += \

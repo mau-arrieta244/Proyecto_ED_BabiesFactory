@@ -1,4 +1,4 @@
-#include "hiloHate.h"
+#include "estructuras.h"
 hilo_Hate::hilo_Hate(){
 
 }
@@ -10,12 +10,12 @@ void hilo_Hate::__init__(struct ColaHate * colaHate){
 
 
 void hilo_Hate::run(){
-    while(!this->colaHate->isFinish()){
+    while(!this->colaHate->isFinishHate()){
         while(!this->running){
             sleep(1);
         }
         this->colaHate->encolarHate();
-        qDebug() << "Llevo " << this->colaHate->hatesActivos << "Sentimiento (s)";
+        qDebug() << "Llevo " << this->colaHate->hatesActivos << "Hate (s)";
         sleep(this->colaHate->segundos);
     }
 }
